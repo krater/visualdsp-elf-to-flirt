@@ -16,6 +16,7 @@
 
 #define ERR -1
 
+//Sorry, code is in extremly uncomplete status, will change this in the next decades....
 
 int main(int argc, char *argv[])
 {
@@ -23,15 +24,17 @@ int main(int argc, char *argv[])
     char *filename=NULL, *outname=NULL;
     int c;
 
+    printf("BlackElf Toolkit by Andreas Schuler\ndoj2map -? for help\n");
+
     while((c=getopt(argc,argv,"l:e:o:a"))!=-1)
     {
         switch(c)
         {
-            case 'l':
+            case 'l':                   //library
                 filename=optarg;
                 islib=1;
                 break;
-            case 'e':
+            case 'e':                       //extract 
                 filename=optarg;
                 extract=1;
                 break;
