@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
         switch(c)
         {
             case 'o':
-        printf("sdsdd\n");
                 strncpy(outdir,optarg,MAX_PATH-2);
                 if(outdir[strlen(outdir)-1]!='/')
                     strcat(outdir,"/");
@@ -52,7 +51,6 @@ int main(int argc, char *argv[])
         }
     }
 
-printf("a\n");
     if(optind<argc)
         filename=argv[optind];
     else
@@ -60,15 +58,13 @@ printf("a\n");
         printf("Usage: dlb2doj -o outputdir filename\n");
         abort();
     }
-    printf("b\n");
+
     if(strlen(outdir))
         mkdir(outdir,0777);
 
-printf("c\n");
     //extract dlb lib 
     dlbreader *dlb=new dlbreader(filename,outdir,1);
 
-printf("c\n");
     char name[256];
     while(dlb->write_next_file(name,256))
     {
