@@ -17,9 +17,10 @@ dlbreader::dlbreader(char *file,char *outpath,int verb)
         return;
     }
 
-    strncpy(path,outpath,PATH_MAX);
+    strncpy(path,outpath,PATH_MAX-1);
     okay=true;
 }
+
 
 dlbreader::~dlbreader()
 {
@@ -84,9 +85,9 @@ size_t dlbreader::write_next_file(char *name,size_t slen)
     struct ar_header head;
     read(infile,&head,sizeof(ar_header));
 
-    char filename[17];
-    strncpy(filename,head.ar_name,16);
-    for(int i=0;i<16;i++)
+    char filename[256];
+    strncpy(filename,head.ar_name,256);
+    for(int i=0;i<255;i++)
     {
         if(filename[i]=='/') 
         {   
@@ -95,12 +96,16 @@ size_t dlbreader::write_next_file(char *name,size_t slen)
         }
     }
 
-    filename[16]=0;
+    filename[255]=0;
+
+    char filepath[256+PATH_MAX];
+    strncpy(filepath,path,PATH_MAX);
+    strcat(filepath,filename);
 
     int fd=0;
-    if((fd=open(filename,O_WRONLY|O_CREAT))==ERR)
+    if((fd=open(filepath,O_WRONLY|O_CREAT,0666))==ERR)
     {
-        printf("couldn't open %s\n", filename);
+        printf("couldn't open %s\n", filepath);
         return 0;
     }
 

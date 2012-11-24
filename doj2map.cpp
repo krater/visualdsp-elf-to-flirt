@@ -16,11 +16,11 @@
 
 #define ERR -1
 
-//Sorry, code is in extremly uncomplete status, will change this in the next decades....
+//Sorry, code is a little uncompleted, will change this in the next decades....
 
 int main(int argc, char *argv[])
 {
-    int islib=0,all=0,extract=0;
+    int all=0;
     char *filename=NULL, *outname=NULL;
     int c;
 
@@ -30,14 +30,6 @@ int main(int argc, char *argv[])
     {
         switch(c)
         {
-            case 'l':                   //library
-                filename=optarg;
-                islib=1;
-                break;
-            case 'e':                       //extract 
-                filename=optarg;
-                extract=1;
-                break;
             case 'o':
                 outname=optarg;
                 break;
@@ -59,17 +51,12 @@ int main(int argc, char *argv[])
         }
     }
 
-    if(all&&(optind<argc))
+    if(optind<argc)
         filename=argv[optind];
 /*
     for(int i = optind; i < argc; i++)
         printf ("Non-option argument %s\n", argv[i]);
 */
-    if(all&&islib)
-    {
-        fprintf(stderr, "Option -a can't used with -l.\n");
-        return 1;
-    }
 
     if(all)
     {
@@ -90,28 +77,6 @@ int main(int argc, char *argv[])
         closedir(dir);
         printf("---\n");
     }
-    else if(islib)
-    {
-        //extract and process dlb lib 
-        dlbreader *dlb=new dlbreader(filename,"/tmp/",1);
-
-        char name[256];
-        while(dlb->write_next_file(name,256))
-        {
-            printf("%s\n",name);
-        }
-    }
-    else if(extract)
-    {
-        //extract dlb file
-        dlbreader *dlb=new dlbreader(filename,"/tmp/",1);
-
-        char name[256];
-        while(dlb->write_next_file(name,256))
-        {
-            printf("%s\n",name);
-        }
-    }
     else
     {
         //process doj file
@@ -119,7 +84,6 @@ int main(int argc, char *argv[])
         dr->print_all();
         dr->print_pattern();
         delete dr;
-
     }
 
 }
